@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "1000591950923",
+    "project_id": "nhatro360-1dfaa",
+    "storage_bucket": "nhatro360-1dfaa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1000591950923:android:9e16105d795196977139ce",
+        "android_client_info": {
+          "package_name": "com.example.adminnhatro360"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1000591950923-9ebe9g63pue2bjqpbcuurilkbba1f4ek.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAt7bBdxJw7yutpKaqnK3Q8VNW7xfbbXt8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1000591950923-9ebe9g63pue2bjqpbcuurilkbba1f4ek.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1000591950923:android:d1f3ca4fb48456437139ce",
+        "android_client_info": {
+          "package_name": "com.example.nhatro360"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1000591950923-9ebe9g63pue2bjqpbcuurilkbba1f4ek.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAt7bBdxJw7yutpKaqnK3Q8VNW7xfbbXt8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1000591950923-9ebe9g63pue2bjqpbcuurilkbba1f4ek.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

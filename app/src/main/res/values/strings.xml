@@ -1,0 +1,137 @@
+<resources>
+    <string name="app_name">Admin NhaTro360</string>
+    <string name="login">Đăng nhập</string>
+    <string name="login_button2">ZALO</string>
+    <string name="login_button3">FACEBOOK</string>
+    <string name="login_button4">GOOGLE</string>
+    <string name="login_email_hint">Email</string>
+    <string name="login_password_hint">Mật khẩu</string>
+    <string name="email">Email</string>
+    <string name="password">Mật khẩu</string>
+    <string name="password_again">Nhập lại mật khẩu</string>
+    <string name="register">Tạo tài khoản</string>
+    <string name="fullname">Họ và tên</string>
+    <string name="phone">Số điện thoại</string>
+    <string name="forgot">Quên mật khẩu?</string>
+    <string name="get_password">Đặt lại mật khẩu</string>
+    <string name="login_otherway">Hoặc đăng nhập với tài khoản</string>
+    <string name="suggest">Bạn chưa có tài khoản?</string>
+    <string name="suggest_register">Bạn chưa có tài khoản? Đăng ký tại đây</string>
+    <string name="policy">Điều khoản và chính sách</string>
+    <string name="logout">Đăng xuất</string>
+    <string name="update_profile">Sửa Profile</string>
+    <string name="change_password">Đổi mật khẩu</string>
+    <string name="old_password">Mật khẩu cũ</string>
+    <string name="new_password">Mật khẩu mới</string>
+    <string name="new_password_again">Nhập lại mật khẩu mới</string>
+    <string name="save_profile">Lưu thông tin</string>
+
+
+    <string name="manage_room">QL Phòng</string>
+    <string name="manage_user">QL Người dùng</string>
+    <string name="posts">Bài viết</string>
+    <string name="account">Tài khoản</string>
+    <string name="unapproved_room">Phòng chờ duyệt</string>
+    <string name="approved_room">Phòng đã duyệt</string>
+    <string name="more">Xem thêm</string>
+    <string name="cancel_app">Bạn có chắc chắn muốn thoát ứng dụng không?</string>
+
+    // Create Post
+    <string name="cancel">Huỷ</string>
+    <string name="back">Quay lại</string>
+    <string name="next">Tiếp theo</string>
+    <string name="post">Đăng</string>
+    <string name="cancel_post_message">Bạn có chắc muốn huỷ tin đăng này?</string>
+    <string name="no">Không</string>
+    <string name="yes">Có</string>
+    <string name="create_post_title">Đăng tin</string>
+    <string name="address">Vị trí</string>
+    <string name="information">Thông tin</string>
+    <string name="image">Hình ảnh</string>
+    <string name="confirm">Xác nhận</string>
+
+    // Fragment Address
+        <string name="current_location">Vị trí hiện tại</string>
+        <string name="province">Tỉnh/TP</string>
+        <string name="district">Quận/Huyện</string>
+        <string name="ward">Phường/Xã</string>
+        <string name="select_province">Chọn Tỉnh/TP</string>
+        <string name="select_district">Chọn Quận/Huyện</string>
+        <string name="select_ward">Chọn Phường/Xã</string>
+        <string name="street">Số nhà, tên đường</string>
+        <string name="fill_street">Nhập số nhà, tên đường</string>
+
+    // Fragment Information
+        <string name="post_type">Loại tin</string>
+        <string name="rent_room">Cho thuê</string>
+        <string name="share_room">Tìm người ở ghép</string>
+        <string name="room_type">Loại phòng</string>
+        <string name="room">Phòng</string>
+        <string name="apartment">Căn hộ</string>
+        <string name="mini_apartment">Căn hộ mini</string>
+        <string name="house">Nguyên căn</string>
+        <string name="room_price">Giá phòng (VND)</string>
+        <string name="room_price_hint">3000000</string>
+        <string name="room_area">Diện tích (m2)</string>
+        <string name="room_area_hint">20</string>
+        <string name="electic_price">Giá điện (VND/số)</string>
+        <string name="electic_price_hint">3500</string>
+        <string name="water_price">Giá nước (VND/khối)</string>
+        <string name="water_price_hint">20000</string>
+        <string name="room_utilities">Tiện ích phòng</string>
+
+    // Fragment Image
+        <string name="upload_image">Chọn ảnh</string>
+        <string name="number">0/6</string>
+        <string name="add_image_hint">Thêm ảnh vào bài đăng\nBạn được thêm tối đa 6 ảnh</string>
+        <string name="select_image_hint">Nhấn vào ảnh để chọn làm ảnh đại diện</string>
+
+    // Fragment Confirm
+        <string name="title">Tiêu đề bài đăng</string>
+        <string name="title_hint">Nhập tiêu đề bài đăng</string>
+        <string name="host">Liên hệ với chủ</string>
+        <string name="host_hint">Nhập họ và tên chủ</string>
+        <string name="phone_number">Số điện thoại (liên lạc)</string>
+        <string name="phone_number_hint">Nhập số điện thoại của bạn</string>
+        <string name="warning">* Bằng việc tiếp tục đăng tin nghĩa là bạn đã đồng ý với Điều khoản và Chính sách của chúng tôi.</string>
+        <string name="limitTitle">50</string>
+        <string name="limitDetail">1000</string>
+        <string name="term_policy_url">https://www.youtube.com/</string>
+        <string name="confirm_message">Bạn chắc chắn muốn tạo phòng</string>
+
+    // Search Fragment
+    <string name="search_location">Tìm quận, thành phố...</string>
+    <string name="search_around">Tìm quanh đây</string>
+    <string name="history_search">Lịch sử tìm kiếm</string>
+    <string name="all">Tất cả</string>
+    <string name="titleSort">Sắp xếp theo</string>
+    <string name="latest">Mới nhất</string>
+    <string name="upPrice">Giá tăng dần</string>
+    <string name="downPrice">Giá giảm dần</string>
+    <string name="titlePrice">Mức giá</string>
+    <string name="titleArea">Diện tích</string>
+    <string name="selected_price">1 triệu - 20+ triệu</string>
+    <string name="selected_area">10 m2 - 100+ m2</string>
+    <string name="close">Đóng</string>
+    <string name="apply">Áp dụng</string>
+    <string name="empty_message">Danh sách trống</string>
+
+    // Account Fragment
+    <string name="posted_room">Phòng đã đăng</string>
+    <string name="saved_room">Phòng đã lưu</string>
+
+    <string name="utility1">Wifi</string>
+    <string name="utility2">WC riêng</string>
+    <string name="utility3">Giữ xe</string>
+    <string name="utility4">Tự do</string>
+    <string name="utility5">Bếp</string>
+    <string name="utility6">Điều hoà</string>
+    <string name="utility7">Tủ lạnh</string>
+    <string name="utility8">Máy giặt</string>
+    <string name="detail">Mô tả chi tiết</string>
+    <string name="map">Bản đồ</string>
+    <string name="action_call">Gọi điện</string>
+    <string name="action_message">Nhắn tin</string>
+    <string name="action_directions">Chỉ đường</string>
+    <string name="google_maps_key" translatable="false">AIzaSyCV-XtP_DXROOk_DQizuQp20i3geV4hLHM</string>
+</resources>

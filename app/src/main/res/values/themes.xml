@@ -1,0 +1,37 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.AdminNhaTro360" parent="Theme.Material3.DayNight.NoActionBar">
+
+        <item name="colorPrimary">@color/blue2</item>
+        <item name="colorPrimaryVariant">@color/blue2</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary color. -->
+        <item name="colorSecondary">@color/blue2</item>
+        <item name="colorSecondaryVariant">@color/blue2</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <!-- Button color. -->
+        <item name="buttonStyle">@style/Widget.AppCompat.Button.Colored</item>
+        <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView</item>
+
+    </style>
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Customize your theme here -->
+        <item name="colorPrimary">@color/blue2</item>
+        <item name="colorPrimaryDark">@color/blue2</item>
+        <item name="colorAccent">@color/blue2</item>
+        <item name="android:statusBarColor">@color/blue2</item>
+        <item name="android:navigationBarColor">@color/blue2</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    </style>
+
+
+
+    <style name="Theme.AdminNhaTro360" parent="Base.Theme.AdminNhaTro360">
+        <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView</item>
+    </style>
+</resources>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="4dp">
+
+    <RelativeLayout
+        android:id="@+id/relative_layout"
+        android:layout_width="match_parent"
+        android:layout_height="115dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/item_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/room_image_demo"
+            app:shapeAppearanceOverlay="@style/RoundedCorners"/>
+
+
+        <TextView
+            android:id="@+id/tv_price"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:background="@drawable/room_price_background"
+            android:padding="4dp"
+            android:text="Item Price"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:textAlignment="center"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/ic_location" />
+
+        <TextView
+            android:id="@+id/tv_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="Item Address"
+            android:textSize="14sp"
+            android:textColor="@color/black2" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/ic_area" />
+
+        <TextView
+            android:id="@+id/tv_area"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Item Area"
+            android:textSize="14sp"
+            android:textColor="@color/black2" />
+
+        <TextView
+            android:id="@+id/tv_time_posted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Item Time Posted"
+            android:textSize="14sp"
+            android:textColor="@color/blue2" />
+    </LinearLayout>
+
+</LinearLayout>

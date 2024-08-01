@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/border_bottom">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/imv_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_new_room" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:paddingHorizontal="5dp"
+            android:textSize="18sp"
+            android:textColor="@color/blue2"
+            android:fontFamily="sans-serif-medium" />
+
+        <TextView
+            android:id="@+id/tv_action"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="5dp"
+            android:text="@string/more"
+            android:textSize="14sp"
+            android:textColor="@color/blue2"
+            android:gravity="center_vertical|right"
+            android:background="@color/white"/>
+    </LinearLayout>
+
+    <!-- RecyclerView Con Để Hiển Thị Danh Sách Phòng -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_rooms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="5dp"
+        android:scrollbars="none"/>
+</LinearLayout>
