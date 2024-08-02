@@ -1,4 +1,4 @@
-package com.example.adminnhatro360.controller.mainActivity.manageRoomFragment.roomDetail;
+package com.example.adminnhatro360.controller.mainActivity.manageRoomFragment.roomDetailActivity;
 
 import android.content.Intent;
 import android.net.Uri;

@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
@@ -17,7 +18,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.adminnhatro360.controller.mainActivity.manageRoomFragment.CustomViewPager;
 import com.example.adminnhatro360.R;
 import com.example.adminnhatro360.controller.mainActivity.manageRoomFragment.ViewPagerAdapter;
-import com.example.adminnhatro360.controller.mainActivity.manageRoomFragment.unapprovedRoomFragment.DetailListFragment;
+import com.example.adminnhatro360.controller.mainActivity.manageRoomFragment.detailListFragment.DetailListFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -91,12 +92,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void replaceWithSearchFragment() {
+    public void replaceWithDetailListFragment() {
         viewPager.setVisibility(View.GONE); // Ẩn ViewPager
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, new DetailListFragment());
-        fragmentTransaction.addToBackStack("ManageRoomFragment"); // Nếu bạn muốn thêm vào backstack
+        fragmentTransaction.addToBackStack("DetailListFragment"); // Nếu bạn muốn thêm vào backstack
         fragmentTransaction.commit();
     }
 
@@ -104,13 +105,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        if (fragmentManager.getBackStackEntryCount() > 0) {
-//            Fragment currentFragment = fragmentManager.findFragmentById(R.id.fragment_container);
-//            if (currentFragment instanceof FragmentPostedRoom || currentFragment instanceof FragmentSavedRoom) {
-//                fragmentManager.popBackStack();
-//            } else {
-//                showExitConfirmationDialog();
-//            }
+        Fragment currentFragment = fragmentManager.findFragmentById(R.id.fragment_container);
+
+        if (currentFragment instanceof DetailListFragment) {
+            // Quay lại ManageRoomFragment
+            fragmentManager.popBackStack();
+            viewPager.setVisibility(View.VISIBLE); // Hiển thị lại ViewPager
+        } else if (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStack();
         } else {
             showExitConfirmationDialog();
         }

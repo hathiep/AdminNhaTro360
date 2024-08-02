@@ -1,9 +1,10 @@
-package com.example.adminnhatro360.controller.mainActivity.manageRoomFragment.unapprovedRoomFragment;
+package com.example.adminnhatro360.controller.mainActivity.manageRoomFragment.detailListFragment;
 
 import static android.content.ContentValues.TAG;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -38,6 +39,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.adminnhatro360.R;
 import com.example.adminnhatro360.controller.mainActivity.manageRoomFragment.OnRoomClickListener;
+import com.example.adminnhatro360.controller.mainActivity.manageRoomFragment.roomDetailActivity.RoomDetailActivity;
 import com.example.adminnhatro360.model.Room;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -77,6 +79,7 @@ public class DetailListFragment extends Fragment implements OnRoomClickListener 
     private RecyclerView recyclerViewRoomList;
     private RoomAdapterSingle roomAdapter;
     private TextView tvEmptyMessage;
+    private boolean showDeleteIcon;
 
     @Nullable
     @Override
@@ -467,12 +470,6 @@ public class DetailListFragment extends Fragment implements OnRoomClickListener 
         return filteredRooms;
     }
 
-
-    @Override
-    public void onRoomClick(Room room) {
-
-    }
-
     private void showMenuDialog(View view) throws JSONException {
         overlay.setVisibility(View.VISIBLE);
 
@@ -744,6 +741,17 @@ public class DetailListFragment extends Fragment implements OnRoomClickListener 
     public void onResume() {
         super.onResume();
         Log.d("DetailListFragment", "onResume called");
+    }
+
+    @Override
+    public void onRoomClick(Room room) {
+        Log.d(TAG, "Room clicked: " + room.getAddress());
+        Log.d(TAG, "Room ID: " + room.getId());
+
+        Intent intent = new Intent(getActivity(), RoomDetailActivity.class);
+        intent.putExtra("roomId", room.getId());
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
     }
 
     interface OnItemClickListener {

@@ -1,4 +1,4 @@
-package com.example.adminnhatro360.controller.mainActivity.manageRoomFragment.unapprovedRoomFragment;
+package com.example.adminnhatro360.controller.mainActivity.manageRoomFragment.detailListFragment;
 
 import android.app.AlertDialog;
 import android.content.Context;

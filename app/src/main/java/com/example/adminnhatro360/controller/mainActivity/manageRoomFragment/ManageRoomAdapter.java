@@ -1,8 +1,5 @@
 package com.example.adminnhatro360.controller.mainActivity.manageRoomFragment;
 
-import static android.content.ContentValues.TAG;
-import static com.google.android.material.internal.ContextUtils.getActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
@@ -94,7 +91,7 @@ public class ManageRoomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     Context context = itemView.getContext();
                     if (context instanceof MainActivity) {
                         MainActivity activity = (MainActivity) context;
-                        activity.replaceWithSearchFragment();
+                        activity.replaceWithDetailListFragment();
                         Log.d("TitleViewHolder", "Fragment replaced");
                     } else {
                         Log.e("TitleViewHolder", "Context is not MainActivity");
