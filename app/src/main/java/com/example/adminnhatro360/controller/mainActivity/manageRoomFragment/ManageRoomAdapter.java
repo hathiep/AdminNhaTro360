@@ -2,6 +2,7 @@ package com.example.adminnhatro360.controller.mainActivity.manageRoomFragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -91,8 +92,10 @@ public class ManageRoomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     Context context = itemView.getContext();
                     if (context instanceof MainActivity) {
                         MainActivity activity = (MainActivity) context;
-                        activity.replaceWithDetailListFragment();
-                        Log.d("TitleViewHolder", "Fragment replaced");
+                        Bundle args = new Bundle();
+                        args.putBoolean("room_status", false); // Giá trị cho approved rooms
+                        activity.replaceWithDetailListFragment(args);
+                        Log.d("TitleViewHolder", "Fragment replaced with args");
                     } else {
                         Log.e("TitleViewHolder", "Context is not MainActivity");
                     }
@@ -101,7 +104,17 @@ public class ManageRoomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 tvTitle.setText(R.string.approved_room);
                 imvIcon.setImageResource(R.drawable.ic_completed_step);
                 tvAction.setOnClickListener(view -> {
-
+                    Log.d("TitleViewHolder", "tvAction clicked");
+                    Context context = itemView.getContext();
+                    if (context instanceof MainActivity) {
+                        MainActivity activity = (MainActivity) context;
+                        Bundle args = new Bundle();
+                        args.putBoolean("room_status", true); // Giá trị cho approved rooms
+                        activity.replaceWithDetailListFragment(args);
+                        Log.d("TitleViewHolder", "Fragment replaced with args");
+                    } else {
+                        Log.e("TitleViewHolder", "Context is not MainActivity");
+                    }
                 });
             }
         }

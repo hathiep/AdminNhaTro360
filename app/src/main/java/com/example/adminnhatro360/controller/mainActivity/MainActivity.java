@@ -13,11 +13,9 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.adminnhatro360.controller.mainActivity.manageRoomFragment.CustomViewPager;
 import com.example.adminnhatro360.R;
-import com.example.adminnhatro360.controller.mainActivity.manageRoomFragment.ViewPagerAdapter;
 import com.example.adminnhatro360.controller.mainActivity.manageRoomFragment.detailListFragment.DetailListFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -25,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
     private CustomViewPager viewPager;
+    private ViewPagerAdapter viewPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,23 +67,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUpViewPager(){
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         viewPager.setAdapter(viewPagerAdapter);
     }
 
     private void setOnMenuSelected() {
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
-            if (itemId == R.id.nav_home) {
+            if (itemId == R.id.nav_manage_room) {
+                viewPagerAdapter.reloadFragment(0);
                 viewPager.setCurrentItem(0, false);
                 return true;
-            } else if (itemId == R.id.nav_search) {
+            } else if (itemId == R.id.nav_manage_user) {
+                viewPagerAdapter.reloadFragment(1);
                 viewPager.setCurrentItem(1, false);
                 return true;
             } else if (itemId == R.id.nav_post) {
+                viewPagerAdapter.reloadFragment(2);
                 viewPager.setCurrentItem(2, false);
                 return true;
             } else if (itemId == R.id.nav_account) {
+                viewPagerAdapter.reloadFragment(3);
                 viewPager.setCurrentItem(3, false);
                 return true;
             }
@@ -92,13 +95,14 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void replaceWithDetailListFragment() {
+    public void replaceWithDetailListFragment(Bundle args) {
         viewPager.setVisibility(View.GONE); // Ẩn ViewPager
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, new DetailListFragment());
-        fragmentTransaction.addToBackStack("DetailListFragment"); // Nếu bạn muốn thêm vào backstack
-        fragmentTransaction.commit();
+        DetailListFragment detailListFragment = new DetailListFragment();
+        detailListFragment.setArguments(args);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, detailListFragment)
+                .addToBackStack("DetailListFragment")
+                .commit();
     }
 
 

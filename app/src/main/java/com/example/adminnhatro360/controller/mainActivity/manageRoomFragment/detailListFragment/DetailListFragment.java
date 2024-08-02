@@ -2,6 +2,7 @@ package com.example.adminnhatro360.controller.mainActivity.manageRoomFragment.de
 
 import static android.content.ContentValues.TAG;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -23,6 +24,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -41,8 +43,11 @@ import com.example.adminnhatro360.R;
 import com.example.adminnhatro360.controller.mainActivity.manageRoomFragment.OnRoomClickListener;
 import com.example.adminnhatro360.controller.mainActivity.manageRoomFragment.roomDetailActivity.RoomDetailActivity;
 import com.example.adminnhatro360.model.Room;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -79,7 +84,9 @@ public class DetailListFragment extends Fragment implements OnRoomClickListener 
     private RecyclerView recyclerViewRoomList;
     private RoomAdapterSingle roomAdapter;
     private TextView tvEmptyMessage;
-    private boolean showDeleteIcon;
+    private Boolean roomStatus = false;
+    private CheckBox checkboxSelectAll;
+    private TextView tvSelectAll, tvApprove, tvDeny;
 
     @Nullable
     @Override
@@ -89,29 +96,41 @@ public class DetailListFragment extends Fragment implements OnRoomClickListener 
 
         init(view);
 
+        if (getArguments() != null) {
+            roomStatus = getArguments().getBoolean("room_status", false); // -1 là giá trị mặc định nếu không tìm thấy key
+        }
+
+        fetchRoomsFromFirestore();
+
+        setOnClick();
+
         return view;
     }
 
     private void init(View view) {
         listAllRoom = new ArrayList<>();
-        listSearchedRoom = new ArrayList<>(); // Thêm danh sách tìm kiếm
+        listSearchedRoom = new ArrayList<>();
         edtSearch = view.findViewById(R.id.edt_search);
         progressBar = view.findViewById(R.id.progressBar);
         imvDrop = view.findViewById(R.id.imv_drop);
+        checkboxSelectAll = view.findViewById(R.id.checkbox_select_all);
+        tvSelectAll = view.findViewById(R.id.tv_select_all);
+        tvApprove = view.findViewById(R.id.tv_approved);
+        tvDeny = view.findViewById(R.id.tv_deny);
         overlay = view.findViewById(R.id.overlay);
         province = district = provinceId = districtId = "";
         imvFilter = view.findViewById(R.id.imv_filter);
 
         tvEmptyMessage = view.findViewById(R.id.tv_empty_message);
-        recyclerViewRoomList = view.findViewById(R.id.recycler_view_room_list); // Thêm dòng này
+        recyclerViewRoomList = view.findViewById(R.id.recycler_view_room_list);
         recyclerViewRoomList.setLayoutManager(new LinearLayoutManager(getContext()));
-        roomAdapter = new RoomAdapterSingle(listSearchedRoom, this, false, getContext());
-
+        roomAdapter = new RoomAdapterSingle(listSearchedRoom, this, roomStatus, getContext());
         recyclerViewRoomList.setAdapter(roomAdapter);
 
         db = FirebaseFirestore.getInstance();
-        fetchRoomsFromFirestore();
+    }
 
+    private void setOnClick(){
         edtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -128,10 +147,12 @@ public class DetailListFragment extends Fragment implements OnRoomClickListener 
 
         edtSearch.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -163,39 +184,54 @@ public class DetailListFragment extends Fragment implements OnRoomClickListener 
                 }
             }
         });
+
+        tvSelectAll.setOnClickListener(view -> {
+            if(checkboxSelectAll.isChecked()){
+                tvSelectAll.setText(getString(R.string.select_all) + " (" + listSearchedRoom.size() + ")");
+                checkboxSelectAll.setChecked(false);
+            }
+            else {
+                tvSelectAll.setText(getString(R.string.unselect_all) + " (" + listSearchedRoom.size() + ")");
+                checkboxSelectAll.setChecked(true);
+            }
+        });
+
+        checkboxSelectAll.setOnCheckedChangeListener((buttonView, isChecked) -> selectAllCheckboxes(isChecked));
+        tvApprove.setOnClickListener(v -> showDeleteConfirmationDialog(true));
+        tvDeny.setOnClickListener(v -> showDeleteConfirmationDialog(false));
     }
 
     private void fetchRoomsFromFirestore() {
-        db.collection("rooms")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        List<Room> roomList = new ArrayList<>();
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Room room = document.toObject(Room.class);
-                            room.setId(document.getId());
-                            if (room.getStatus() == 0) {
-                                listAllRoom.add(room);
-                            }
-                        }
-
-                        sortRoomsByTimePosted(listAllRoom);
-
-                        updateRoomList(listAllRoom);
-
-                    } else {
-                        Log.w(TAG, "Error getting documents.", task.getException());
+        db.collection("rooms").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                List<Room> roomList = new ArrayList<>();
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Room room = document.toObject(Room.class);
+                    room.setId(document.getId());
+                    if (room.getStatus() == ((!roomStatus) ? 0 : 1)) {
+                        listAllRoom.add(room);
                     }
-                });
+                }
+
+                sortRoomsByTimePosted(listAllRoom);
+                updateRoomList(listAllRoom);
+
+            } else {
+                Log.w(TAG, "Error getting documents.", task.getException());
+            }
+        });
     }
 
     private void updateRoomList(List<Room> rooms) {
         listSearchedRoom.clear();
         listSearchedRoom.addAll(rooms);
+        tvSelectAll.setText(getString(R.string.select_all) + " (" + listSearchedRoom.size() + ")");
+        roomAdapter.updateSelectedList();
         roomAdapter.notifyDataSetChanged();
         tvEmptyMessage.setVisibility(rooms.isEmpty() ? View.VISIBLE : View.GONE);
         recyclerViewRoomList.setVisibility(rooms.isEmpty() ? View.GONE : View.VISIBLE);
     }
+
 
     private void showFilterDialog(View view) throws JSONException {
         overlay.setVisibility(View.VISIBLE);
@@ -227,7 +263,7 @@ public class DetailListFragment extends Fragment implements OnRoomClickListener 
         });
     }
 
-    private void initFilter(){
+    private void initFilter() {
         dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.dialog_filter_room);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -271,12 +307,12 @@ public class DetailListFragment extends Fragment implements OnRoomClickListener 
         btnFilter = dialog.findViewById(R.id.btn_filter);
     }
 
-    private void onClickList(List<TextView> listTv, int position){
-        for (int i=0; i<listTv.size(); i++){
+    private void onClickList(List<TextView> listTv, int position) {
+        for (int i = 0; i < listTv.size(); i++) {
             TextView tv = listTv.get(i);
             int index = i;
             tv.setOnClickListener(view -> {
-                for(int j=0; j<listTv.size(); j++){
+                for (int j = 0; j < listTv.size(); j++) {
                     listTv.get(j).setTextColor(getResources().getColor(R.color.blue2));
                     listTv.get(j).setBackgroundTintList(null);
                 }
@@ -286,6 +322,40 @@ public class DetailListFragment extends Fragment implements OnRoomClickListener 
             });
         }
     }
+
+    public void selectAllCheckboxes(boolean selectAll) {
+        if(checkboxSelectAll.isChecked())
+            tvSelectAll.setText(getString(R.string.unselect_all) + " (" + listSearchedRoom.size() + ")");
+        else
+            tvSelectAll.setText(getString(R.string.select_all) + " (" + listSearchedRoom.size() + ")");
+        roomAdapter.selectAllCheckboxes(selectAll);
+    }
+
+    private void updateRoomStatus(int status) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        List<Integer> selectedPositions = roomAdapter.getSelectedPositions();
+
+        for (int position : selectedPositions) {
+            Room room = listSearchedRoom.get(position);
+            room.setStatus(status);
+            Timestamp currentTimestamp = Timestamp.now();
+            room.setTimePosted(currentTimestamp);
+            db.collection("rooms").document(room.getId()).update("status", status, "timePosted", currentTimestamp)
+                    .addOnSuccessListener(aVoid -> {
+                        // Successfully updated
+                    })
+                    .addOnFailureListener(e -> {
+                        // Failed to update
+                    });
+        }
+        List<Room> listRoomUpdated = new ArrayList<>();
+        for(Room room : listSearchedRoom){
+            if(room.getStatus() != status) listRoomUpdated.add(room);
+        }
+        updateRoomList(listRoomUpdated);
+    }
+
+
 
     private void initDrag(int i, boolean isLeft) {
         TextView tvSelected;
@@ -345,15 +415,15 @@ public class DetailListFragment extends Fragment implements OnRoomClickListener 
                                 minPrice = minValuePrice + (int) ((leftPos / containerWidth) * (maxValuePrice - minValuePrice + 2));
                                 maxPrice = minValuePrice + (int) ((rightPos / containerWidth) * (maxValuePrice - minValuePrice + 2));
                                 String selected = minPrice + " triệu  - " + maxPrice;
-                                if(maxPrice == maxValuePrice) selected+= "+ triệu";
-                                else selected+= " triệu";
+                                if (maxPrice == maxValuePrice) selected += "+ triệu";
+                                else selected += " triệu";
                                 tvSelected.setText(selected);
                             } else {
                                 minArea = minValueArea + (int) ((leftPos / containerWidth) * (maxValueArea - minValueArea + 6));
                                 maxArea = minValueArea + (int) ((rightPos / containerWidth) * (maxValueArea - minValueArea + 6));
                                 String selected = minArea + " m2  - " + maxArea;
-                                if(maxArea == maxValueArea) selected+= "+ m2";
-                                else selected+= " m2";
+                                if (maxArea == maxValueArea) selected += "+ m2";
+                                else selected += " m2";
                                 tvSelected.setText(selected);
                             }
                         }
@@ -529,7 +599,7 @@ public class DetailListFragment extends Fragment implements OnRoomClickListener 
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(edtProvince.getText().toString().equals("")){
+                if (edtProvince.getText().toString().equals("")) {
                     Toast.makeText(getActivity(), "Vui lòng chọn Tỉnh/TP", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -538,7 +608,7 @@ public class DetailListFragment extends Fragment implements OnRoomClickListener 
                 province = edtProvince.getText().toString();
                 district = edtDistrict.getText().toString();
                 String str = district + ", " + province;
-                if(district.equals("")) str = province;
+                if (district.equals("")) str = province;
                 performSearch(str);
             }
         });
@@ -567,7 +637,7 @@ public class DetailListFragment extends Fragment implements OnRoomClickListener 
     private JSONArray sortArray(JSONArray arr, boolean prov) throws JSONException {
         List<JSONObject> list = new ArrayList<>();
         int x = 0;
-        if(prov) x = 5; // 5 Thành phố trực thuộc trung ương ưu tiên lên đầu không sắp xếp
+        if (prov) x = 5; // 5 Thành phố trực thuộc trung ương ưu tiên lên đầu không sắp xếp
         for (int i = x; i < arr.length(); i++) {
             list.add(arr.getJSONObject(i));
         }
@@ -581,7 +651,7 @@ public class DetailListFragment extends Fragment implements OnRoomClickListener 
         });
 
         JSONArray sortedJsonArray = new JSONArray();
-        if(prov) for(int i=0; i<5; i++) sortedJsonArray.put(arr.get(i));
+        if (prov) for (int i = 0; i < 5; i++) sortedJsonArray.put(arr.get(i));
         for (JSONObject object : list) sortedJsonArray.put(object);
         return sortedJsonArray;
     }
@@ -650,11 +720,8 @@ public class DetailListFragment extends Fragment implements OnRoomClickListener 
         }
 
         ListView listView = dialog.findViewById(R.id.list_view_popup);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                getActivity(),
-                R.layout.item_list_seach_address,  // Sử dụng layout của bạn
-                items
-        );
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.item_list_seach_address,  // Sử dụng layout của bạn
+                items);
         adapter.notifyDataSetChanged();
         listView.setAdapter(adapter);
 
@@ -731,6 +798,26 @@ public class DetailListFragment extends Fragment implements OnRoomClickListener 
             }
         });
     }
+
+    private void showDeleteConfirmationDialog(Boolean approved) {
+        List<Integer> selectedPositions = roomAdapter.getSelectedPositions();
+        if(selectedPositions.isEmpty()) {
+            Toast.makeText(getContext(), "Bạn chưa chọn phòng nào!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        new AlertDialog.Builder(getContext())
+                .setMessage((approved) ? R.string.approve_message : R.string.deny_message)
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    progressBar.setVisibility(View.VISIBLE);
+                    new Handler().postDelayed(() -> {
+                        updateRoomStatus((approved) ? 1 : 2);
+                        progressBar.setVisibility(View.GONE);
+                    }, 1000);
+                })
+                .setNegativeButton("No", null)
+                .show();
+    }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);

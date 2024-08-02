@@ -21,7 +21,7 @@
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="110dp"
         android:layout_centerHorizontal="true"
         android:visibility="gone" />
 
@@ -59,6 +59,65 @@
 
     </LinearLayout>
 
+    <RelativeLayout
+        android:id="@+id/layout_action"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_search"
+        android:padding="5dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/border_bottom">
+
+        <CheckBox
+            android:id="@+id/checkbox_select_all"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"/>
+
+        <TextView
+            android:id="@+id/tv_select_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/checkbox_select_all"
+            android:layout_centerVertical="true"
+            android:text="@string/select_all"
+            android:textColor="@color/blue2"
+            android:textSize="16sp"
+            android:fontFamily="sans-serif-medium"
+            android:ellipsize="end"
+            android:maxLines="2"/>
+
+        <TextView
+            android:id="@+id/tv_approved"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:layout_toLeftOf="@+id/tv_deny"
+            android:layout_centerVertical="true"
+            android:text="@string/approve"
+            android:textColor="@color/blue2"
+            android:textSize="16sp"
+            android:fontFamily="sans-serif-medium"
+            android:ellipsize="end"
+            android:maxLines="2"/>
+
+        <TextView
+            android:id="@+id/tv_deny"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="@string/deny"
+            android:textColor="@color/red2"
+            android:textSize="16sp"
+            android:fontFamily="sans-serif-medium"
+            android:ellipsize="end"
+            android:maxLines="2"/>
+
+    </RelativeLayout>
+
     <TextView
         android:id="@+id/tv_empty_message"
         android:layout_width="match_parent"
@@ -70,10 +129,9 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_room_list"
-        android:layout_below="@+id/layout_search"
+        android:layout_below="@+id/layout_action"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="10dp"
         android:scrollbars="vertical"/>
 
 
