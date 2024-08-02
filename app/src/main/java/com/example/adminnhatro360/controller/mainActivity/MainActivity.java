@@ -12,10 +12,12 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.adminnhatro360.controller.mainActivity.manageRoomFragment.CustomViewPager;
 import com.example.adminnhatro360.R;
 import com.example.adminnhatro360.controller.mainActivity.manageRoomFragment.ViewPagerAdapter;
+import com.example.adminnhatro360.controller.mainActivity.manageRoomFragment.unapprovedRoomFragment.DetailListFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -88,6 +90,16 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
     }
+
+    public void replaceWithSearchFragment() {
+        viewPager.setVisibility(View.GONE); // Ẩn ViewPager
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, new DetailListFragment());
+        fragmentTransaction.addToBackStack("ManageRoomFragment"); // Nếu bạn muốn thêm vào backstack
+        fragmentTransaction.commit();
+    }
+
 
     @Override
     public void onBackPressed() {

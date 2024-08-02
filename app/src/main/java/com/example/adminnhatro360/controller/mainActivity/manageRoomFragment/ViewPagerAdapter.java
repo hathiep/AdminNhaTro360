@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 //import com.example.adminnhatro360.controller.PostFragment;
 //import com.example.adminnhatro360.controller.mainActivity.fragmentAccount.AccountFragment;
-//import com.example.adminnhatro360.controller.mainActivity.fragmentSearch.SearchFragment;
+//import com.example.adminnhatro360.controller.mainActivity.fragmentSearch.DetailListFragment;
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     public ViewPagerAdapter(@NonNull FragmentManager fm, int behavior) {
@@ -25,7 +25,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
             case 0:
                 return new ManageRoomFragment();
 //            case 1:
-//                return new SearchFragment();
+//                return new DetailListFragment();
 //            case 2:
 //                return new PostFragment();
 //            case 3:

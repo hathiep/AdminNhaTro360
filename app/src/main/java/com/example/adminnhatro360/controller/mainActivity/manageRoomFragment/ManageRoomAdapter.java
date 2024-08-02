@@ -1,5 +1,11 @@
 package com.example.adminnhatro360.controller.mainActivity.manageRoomFragment;
 
+import static android.content.ContentValues.TAG;
+import static com.google.android.material.internal.ContextUtils.getActivity;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.adminnhatro360.R;
+import com.example.adminnhatro360.controller.mainActivity.MainActivity;
 import com.example.adminnhatro360.model.Room;
 
 import java.util.List;
@@ -21,7 +28,7 @@ import com.google.firebase.Timestamp;
 import java.text.DecimalFormat;
 import java.util.concurrent.TimeUnit;
 
-public class ManageRoomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ManageRoomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ROOM = 1;
@@ -77,12 +84,21 @@ public class ManageRoomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             tvAction = itemView.findViewById(R.id.tv_action);
         }
 
+        @SuppressLint("RestrictedApi")
         public void bind(String header) {
             if ("title_unapproved".equals(header)) {
                 tvTitle.setText(R.string.unapproved_room);
                 imvIcon.setImageResource(R.drawable.ic_new_room);
                 tvAction.setOnClickListener(view -> {
-
+                    Log.d("TitleViewHolder", "tvAction clicked");
+                    Context context = itemView.getContext();
+                    if (context instanceof MainActivity) {
+                        MainActivity activity = (MainActivity) context;
+                        activity.replaceWithSearchFragment();
+                        Log.d("TitleViewHolder", "Fragment replaced");
+                    } else {
+                        Log.e("TitleViewHolder", "Context is not MainActivity");
+                    }
                 });
             } else if ("title_approved".equals(header)) {
                 tvTitle.setText(R.string.approved_room);

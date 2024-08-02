@@ -1,0 +1,74 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginBottom="0dp"
+    android:paddingHorizontal="15dp"
+    android:paddingVertical="10dp"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/tv_choose_province"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:text="@string/province"
+        android:textSize="16sp"
+        android:textColor="@color/black2"/>
+
+    <EditText
+        android:id="@+id/edt_province"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/border"
+        android:hint="@string/select_province"
+        android:paddingHorizontal="20dp"
+        android:textSize="16sp"
+        android:textColor="@color/black2"
+        android:clickable="true"
+        android:focusable="false"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="12dp"
+        android:text="@string/district"
+        android:textSize="16sp"
+        android:textColor="@color/black2"/>
+
+    <EditText
+        android:id="@+id/edt_district"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/border"
+        android:hint="@string/select_district"
+        android:paddingHorizontal="20dp"
+        android:layout_marginBottom="10dp"
+        android:textSize="16sp"
+        android:textColor="@color/black2"
+        android:clickable="true"
+        android:focusable="false"/>
+
+    <ListView
+        android:id="@+id/list_view_popup"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:overScrollMode="always"
+        android:visibility="gone"
+        android:divider="@color/blue2"
+        android:dividerHeight="0.5dp"/>
+
+    <Button
+        android:id="@+id/btn_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
+        android:background="@drawable/border_button_fill"
+        android:gravity="center"
+        android:text="@string/search"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+</LinearLayout>
