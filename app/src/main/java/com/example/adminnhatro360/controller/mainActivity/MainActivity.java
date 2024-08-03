@@ -74,15 +74,15 @@ public class MainActivity extends AppCompatActivity {
     private void setOnMenuSelected() {
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
-            if (itemId == R.id.nav_manage_room) {
+            if (itemId == R.id.nav_dashboard) {
                 viewPagerAdapter.reloadFragment(0);
                 viewPager.setCurrentItem(0, false);
                 return true;
-            } else if (itemId == R.id.nav_manage_user) {
+            } else if (itemId == R.id.nav_manage_room) {
                 viewPagerAdapter.reloadFragment(1);
                 viewPager.setCurrentItem(1, false);
                 return true;
-            } else if (itemId == R.id.nav_post) {
+            } else if (itemId == R.id.nav_manage_user) {
                 viewPagerAdapter.reloadFragment(2);
                 viewPager.setCurrentItem(2, false);
                 return true;

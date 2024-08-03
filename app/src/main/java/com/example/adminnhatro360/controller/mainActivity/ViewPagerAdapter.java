@@ -5,7 +5,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
+import com.example.adminnhatro360.controller.mainActivity.dashboard.DashboardFragment;
 import com.example.adminnhatro360.controller.mainActivity.manageRoomFragment.ManageRoomFragment;
+import com.example.adminnhatro360.controller.mainActivity.manageUserFragment.ManageUserFragment;
 
 //import com.example.adminnhatro360.controller.PostFragment;
 //import com.example.adminnhatro360.controller.mainActivity.fragmentAccount.AccountFragment;
@@ -17,9 +19,9 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     public ViewPagerAdapter(@NonNull FragmentManager fm, int behavior) {
         super(fm, behavior);
         fragments = new Fragment[]{
-                new ManageRoomFragment()
-//                new SearchFragment(),
-//                new PostFragment(),
+                new DashboardFragment(),
+                new ManageRoomFragment(),
+                new ManageUserFragment()
 //                new AccountFragment()
         };
     }
@@ -43,15 +45,15 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     private Fragment createFragment(int position) {
         switch (position) {
             case 0:
+                return new DashboardFragment();
+            case 1:
                 return new ManageRoomFragment();
-//            case 1:
-//                return new SearchFragment();
-//            case 2:
-//                return new PostFragment();
+            case 2:
+                return new ManageUserFragment();
 //            case 3:
 //                return new AccountFragment();
             default:
-                return new ManageRoomFragment();
+                return new DashboardFragment();
         }
     }
 }

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_dashboard"
+        android:title="@string/dashboard"
+        android:icon="@drawable/ic_post" />
     <item
         android:id="@+id/nav_manage_room"
         android:title="@string/manage_room"
@@ -8,10 +13,6 @@
         android:id="@+id/nav_manage_user"
         android:title="@string/manage_user"
         android:icon="@drawable/ic_account" />
-    <item
-        android:id="@+id/nav_post"
-        android:title="@string/posts"
-        android:icon="@drawable/ic_post" />
     <item
         android:id="@+id/nav_account"
         android:title="@string/account"

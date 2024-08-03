@@ -67,7 +67,7 @@ public class RoomDetailActivity extends AppCompatActivity implements OnMapReadyC
     private FirebaseFirestore db;
     private GoogleMap mMap;
     private LatLng roomLatLng;
-    private ImageView imvBack, imvSave;
+    private ImageView imvBack;
     private boolean save;
     private static Room room;
     private FirebaseUser currentUser;
@@ -96,40 +96,10 @@ public class RoomDetailActivity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onCallback(User userData) {
                 user = userData;
-                // Tiến hành các xử lý liên quan đến user sau khi dữ liệu đã được lấy
-                handleUserData(roomId);
             }
         });
 
         imvBack.setOnClickListener(v -> onBackPressed());
-    }
-
-    private void handleUserData(String roomId) {
-        Log.e(TAG, user.getEmail() + " " + user.getId() + " " + user.getListSavedRoom());
-        if (user.getListSavedRoom() != null) {
-            if (user.getListSavedRoom().contains(roomId)) {
-                imvSave.setImageResource(R.drawable.ic_save);
-                save = true;
-            } else {
-                imvSave.setImageResource(R.drawable.ic_unsave);
-                save = false;
-            }
-        }
-
-        imvSave.setOnClickListener(view -> {
-            if (save) {
-                imvSave.setImageResource(R.drawable.ic_unsave);
-                user.getListSavedRoom().remove(roomId);
-                save = false;
-                Toast.makeText(this, "Bỏ lưu thành công", Toast.LENGTH_SHORT).show();
-            } else {
-                imvSave.setImageResource(R.drawable.ic_save);
-                user.getListSavedRoom().add(roomId);
-                save = true;
-                Toast.makeText(this, "Lưu thành công", Toast.LENGTH_SHORT).show();
-            }
-            updateUser();
-        });
     }
 
     // Initialize views
@@ -138,7 +108,6 @@ public class RoomDetailActivity extends AppCompatActivity implements OnMapReadyC
         db = FirebaseFirestore.getInstance();
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         imvBack = findViewById(R.id.imv_back);
-        imvSave = findViewById(R.id.imv_save);
         room = new Room();
         user = new User();
         save = false;

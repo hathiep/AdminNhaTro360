@@ -27,9 +27,9 @@
     <string name="save_profile">Lưu thông tin</string>
 
 
+    <string name="dashboard">Thống kê</string>
     <string name="manage_room">QL Phòng</string>
     <string name="manage_user">QL Người dùng</string>
-    <string name="posts">Bài viết</string>
     <string name="account">Tài khoản</string>
     <string name="unapproved_room">Phòng chờ duyệt</string>
     <string name="approved_room">Phòng đã duyệt</string>
@@ -99,7 +99,8 @@
         <string name="term_policy_url">https://www.youtube.com/</string>
         <string name="confirm_message">Bạn chắc chắn muốn tạo phòng</string>
 
-    // Search Fragment
+    // Fragment detail list
+    <string name="room_chart">Biểu đồ giá phòng</string>
     <string name="search">Tìm kiếm</string>
     <string name="search_location">Tìm quận, thành phố...</string>
     <string name="select_all">Chọn tất cả</string>
