@@ -18,15 +18,12 @@
             android:layout_marginHorizontal="5dp"
             android:layout_marginVertical="5dp"
             android:layout_width="match_parent"
-            android:layout_height="200dp">
+            android:layout_height="wrap_content">
 
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/bar_chart_room_types"
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pie_chart_room_types"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                tools:ignore="MissingClass" />
-
+                android:layout_height="200dp"/>
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView

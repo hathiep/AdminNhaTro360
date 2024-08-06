@@ -94,7 +94,7 @@ public class ManageRoomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         MainActivity activity = (MainActivity) context;
                         Bundle args = new Bundle();
                         args.putBoolean("room_status", false); // Giá trị cho approved rooms
-                        activity.replaceWithDetailListFragment(args);
+                        activity.showDetailListFragment(args);
                         Log.d("TitleViewHolder", "Fragment replaced with args");
                     } else {
                         Log.e("TitleViewHolder", "Context is not MainActivity");
@@ -110,7 +110,7 @@ public class ManageRoomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         MainActivity activity = (MainActivity) context;
                         Bundle args = new Bundle();
                         args.putBoolean("room_status", true); // Giá trị cho approved rooms
-                        activity.replaceWithDetailListFragment(args);
+                        activity.showDetailListFragment(args);
                         Log.d("TitleViewHolder", "Fragment replaced with args");
                     } else {
                         Log.e("TitleViewHolder", "Context is not MainActivity");

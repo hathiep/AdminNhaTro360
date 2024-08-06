@@ -43,10 +43,13 @@ import com.example.adminnhatro360.R;
 import com.example.adminnhatro360.controller.mainActivity.manageRoomFragment.OnRoomClickListener;
 import com.example.adminnhatro360.controller.mainActivity.manageRoomFragment.roomDetailActivity.RoomDetailActivity;
 import com.example.adminnhatro360.model.Room;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 
 import org.json.JSONArray;
@@ -354,8 +357,6 @@ public class DetailListFragment extends Fragment implements OnRoomClickListener 
         }
         updateRoomList(listRoomUpdated);
     }
-
-
 
     private void initDrag(int i, boolean isLeft) {
         TextView tvSelected;

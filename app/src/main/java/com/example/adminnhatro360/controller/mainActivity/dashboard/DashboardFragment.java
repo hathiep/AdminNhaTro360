@@ -26,9 +26,15 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.utils.ColorTemplate;
+
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +43,7 @@ public class DashboardFragment extends Fragment {
 
     private static final String TAG = "DashboardFragment";
     private FirebaseFirestore db;
-    private BarChart barChartRoomTypes;
+    private PieChart pieChartRoomTypes;
     private LineChart lineChartPrice;
     private LineChart lineChartArea;
 
@@ -53,7 +59,7 @@ public class DashboardFragment extends Fragment {
     }
 
     private void init(View view) {
-        barChartRoomTypes = view.findViewById(R.id.bar_chart_room_types);
+        pieChartRoomTypes = view.findViewById(R.id.pie_chart_room_types);
         lineChartPrice = view.findViewById(R.id.line_chart_price);
         lineChartArea = view.findViewById(R.id.line_chart_area);
     }
@@ -81,14 +87,11 @@ public class DashboardFragment extends Fragment {
     }
 
     private void sortRoomsByTimePosted(List<Room> rooms) {
-        Collections.sort(rooms, new Comparator<Room>() {
-            @Override
-            public int compare(Room room1, Room room2) {
-                if (room1.getTimePosted() == null || room2.getTimePosted() == null) {
-                    return 0;
-                }
-                return room2.getTimePosted().compareTo(room1.getTimePosted());
+        Collections.sort(rooms, (room1, room2) -> {
+            if (room1.getTimePosted() == null || room2.getTimePosted() == null) {
+                return 0;
             }
+            return room2.getTimePosted().compareTo(room1.getTimePosted());
         });
     }
 
@@ -117,35 +120,34 @@ public class DashboardFragment extends Fragment {
             areaCount.put(areaRange, areaCount.getOrDefault(areaRange, 0) + 1);
         }
 
-        // Tạo dữ liệu cho biểu đồ cột (loại phòng)
-        ArrayList<BarEntry> typeEntries = new ArrayList<>();
-        typeEntries.add(new BarEntry(0, roomTypeCount.get(1)));
-        typeEntries.add(new BarEntry(1, roomTypeCount.get(2)));
-        typeEntries.add(new BarEntry(2, roomTypeCount.get(3)));
-        typeEntries.add(new BarEntry(3, roomTypeCount.get(4)));
+        // Tạo dữ liệu cho biểu đồ hình quạt (loại phòng)
+        ArrayList<PieEntry> typeEntries = new ArrayList<>();
+        typeEntries.add(new PieEntry(roomTypeCount.get(1), "Phòng"));
+        typeEntries.add(new PieEntry(roomTypeCount.get(2), "Căn hộ"));
+        typeEntries.add(new PieEntry(roomTypeCount.get(3), "CCMN"));
+        typeEntries.add(new PieEntry(roomTypeCount.get(4), "Nguyên căn"));
 
-        BarDataSet typeDataSet = new BarDataSet(typeEntries, "Loại phòng");
+        PieDataSet typeDataSet = new PieDataSet(typeEntries, "");
         typeDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
 
-        BarData barData = new BarData(typeDataSet);
-        barChartRoomTypes.setData(barData);
+        // Thêm khoảng cách giữa các thành phần của biểu đồ hình quạt
+        typeDataSet.setSliceSpace(3f);
 
-        // Cấu hình trục x
-        barChartRoomTypes.getXAxis().setValueFormatter(new XAxisValueFormatter());
-        barChartRoomTypes.getXAxis().setGranularity(1); // Đảm bảo các cột không bị chồng lấp
-        barChartRoomTypes.getXAxis().setGranularityEnabled(true);
+        PieData pieData = new PieData(typeDataSet);
+        pieChartRoomTypes.setData(pieData);
 
-        // Đặt các nhãn của trục X ở dưới cùng
-        barChartRoomTypes.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        // Loại bỏ lỗ giữa và vòng tròn trong suốt
+        pieChartRoomTypes.setHoleRadius(0f);
+        pieChartRoomTypes.setTransparentCircleRadius(0f);
 
-        // Cấu hình trục Y
-        barChartRoomTypes.getAxisLeft().setGranularity(1);
-        barChartRoomTypes.getAxisLeft().setAxisMinimum(0); // Đảm bảo trục Y bắt đầu từ 0
-        barChartRoomTypes.getAxisRight().setEnabled(false); // Tắt trục Y bên phải
+        pieChartRoomTypes.getLegend().setEnabled(true);
+        pieChartRoomTypes.getLegend().setVerticalAlignment(Legend.LegendVerticalAlignment.CENTER);
+        pieChartRoomTypes.getLegend().setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        pieChartRoomTypes.getLegend().setOrientation(Legend.LegendOrientation.VERTICAL);
+        pieChartRoomTypes.getLegend().setDrawInside(false);
 
-        barChartRoomTypes.getDescription().setEnabled(false);
-        barChartRoomTypes.getLegend().setEnabled(true);
-        barChartRoomTypes.invalidate(); // Refresh chart
+        pieChartRoomTypes.getDescription().setEnabled(false);
+        pieChartRoomTypes.invalidate(); // Refresh chart
 
         // Tạo dữ liệu cho biểu đồ đường (giá)
         ArrayList<Entry> priceEntries = new ArrayList<>();
@@ -221,16 +223,6 @@ public class DashboardFragment extends Fragment {
         int lowerBound = (area / 10) * 10;
         int upperBound = lowerBound + 10;
         return lowerBound + " - " + upperBound;
-    }
-
-    // Custom formatter cho trục X của biểu đồ cột (loại phòng)
-    public class XAxisValueFormatter extends ValueFormatter {
-        private final String[] labels = {"Phòng trọ", "Căn hộ", "Nhà nguyên căn", "Chung cư mini"};
-
-        @Override
-        public String getFormattedValue(float value) {
-            return labels[(int) value];
-        }
     }
 
     // Custom formatter cho trục X của biểu đồ đường (giá)

@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.Packaging
+
 plugins {
     alias(libs.plugins.androidApplication)
     id("com.google.gms.google-services")
@@ -7,6 +9,10 @@ plugins {
 android {
     namespace = "com.example.adminnhatro360"
     compileSdk = 34
+
+    packagingOptions {
+        exclude("META-INF/DEPENDENCIES")
+    }
 
     defaultConfig {
         applicationId = "com.example.adminnhatro360"
@@ -44,6 +50,7 @@ dependencies {
     implementation(libs.play.services.maps)
     implementation(libs.volley)
     implementation(libs.firebase.storage)
+    implementation(libs.firebase.messaging)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -60,4 +67,5 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.11.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.11.0")
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation("com.google.auth:google-auth-library-oauth2-http:1.3.0")
 }
