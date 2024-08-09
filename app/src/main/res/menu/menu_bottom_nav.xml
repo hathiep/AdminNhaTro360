@@ -13,8 +13,8 @@
         android:id="@+id/nav_manage_user"
         android:title="@string/manage_user"
         android:icon="@drawable/ic_account" />
-    <item
-        android:id="@+id/nav_account"
-        android:title="@string/account"
-        android:icon="@drawable/ic_account" />
+<!--    <item-->
+<!--        android:id="@+id/nav_account"-->
+<!--        android:title="@string/account"-->
+<!--        android:icon="@drawable/ic_account" />-->
 </menu>

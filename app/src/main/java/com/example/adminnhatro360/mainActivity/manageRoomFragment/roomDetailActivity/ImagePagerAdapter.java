@@ -1,4 +1,4 @@
-package com.example.adminnhatro360.controller.mainActivity.manageRoomFragment.roomDetailActivity;
+package com.example.adminnhatro360.mainActivity.manageRoomFragment.roomDetailActivity;
 
 import android.content.Context;
 import android.view.LayoutInflater;

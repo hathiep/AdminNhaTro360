@@ -1,4 +1,4 @@
-package com.example.adminnhatro360.controller.mainActivity.manageRoomFragment.detailListFragment;
+package com.example.adminnhatro360.mainActivity.manageRoomFragment.detailListFragment;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.adminnhatro360.R;
-import com.example.adminnhatro360.controller.mainActivity.manageRoomFragment.OnRoomClickListener;
+import com.example.adminnhatro360.mainActivity.manageRoomFragment.OnRoomClickListener;
 import com.example.adminnhatro360.model.Room;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;

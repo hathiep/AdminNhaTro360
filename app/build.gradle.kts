@@ -67,5 +67,7 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.11.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.11.0")
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
-    implementation("com.google.auth:google-auth-library-oauth2-http:1.3.0")
+    implementation("com.squareup.okhttp3:okhttp:4.9.0")
+    implementation("com.google.auth:google-auth-library-oauth2-http:0.24.0")
+
 }

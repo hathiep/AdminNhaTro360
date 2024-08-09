@@ -1,22 +1,22 @@
-package com.example.adminnhatro360.controller.mainActivity;
+package com.example.adminnhatro360.mainActivity;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.example.adminnhatro360.controller.mainActivity.dashboard.DashboardFragment;
-import com.example.adminnhatro360.controller.mainActivity.manageRoomFragment.ManageRoomFragment;
-import com.example.adminnhatro360.controller.mainActivity.manageUserFragment.ManageUserFragment;
+import com.example.adminnhatro360.mainActivity.dashboard.DashboardFragment;
+import com.example.adminnhatro360.mainActivity.manageRoomFragment.ManageRoomFragment;
+import com.example.adminnhatro360.mainActivity.manageUserFragment.ManageUserFragment;
 
 //import com.example.adminnhatro360.controller.PostFragment;
 //import com.example.adminnhatro360.controller.mainActivity.fragmentAccount.AccountFragment;
 //import com.example.adminnhatro360.controller.mainActivity.fragmentSearch.DetailListFragment;
 
-public class ViewPagerAdapter extends FragmentStatePagerAdapter {
+public class MainViewPagerAdapter extends FragmentStatePagerAdapter {
     private Fragment[] fragments;
 
-    public ViewPagerAdapter(@NonNull FragmentManager fm, int behavior) {
+    public MainViewPagerAdapter(@NonNull FragmentManager fm, int behavior) {
         super(fm, behavior);
         fragments = new Fragment[]{
                 new DashboardFragment(),

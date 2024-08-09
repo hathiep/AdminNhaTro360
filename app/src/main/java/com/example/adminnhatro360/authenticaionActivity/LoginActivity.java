@@ -1,4 +1,4 @@
-package com.example.adminnhatro360.controller;
+package com.example.adminnhatro360.authenticaionActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -20,7 +20,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.adminnhatro360.R;
-import com.example.adminnhatro360.controller.mainActivity.MainActivity;
+import com.example.adminnhatro360.mainActivity.MainActivity;
 import com.example.adminnhatro360.model.Validate;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

@@ -1,4 +1,4 @@
-package com.example.adminnhatro360;
+package com.example.adminnhatro360.mainActivity;
 
 public class FCMSend {
     private static String BASE_URL = "https://fcm.googleapis.com/fcm/send";

@@ -1,4 +1,4 @@
-package com.example.adminnhatro360.controller.mainActivity.manageUserFragment;
+package com.example.adminnhatro360.mainActivity.manageUserFragment;
 
 import androidx.fragment.app.Fragment;
 

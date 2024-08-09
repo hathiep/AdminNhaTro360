@@ -1,4 +1,4 @@
-package com.example.adminnhatro360.controller.mainActivity.manageRoomFragment;
+package com.example.adminnhatro360.mainActivity.manageRoomFragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.adminnhatro360.R;
-import com.example.adminnhatro360.controller.mainActivity.MainActivity;
+import com.example.adminnhatro360.mainActivity.MainActivity;
 import com.example.adminnhatro360.model.Room;
 
 import java.util.List;

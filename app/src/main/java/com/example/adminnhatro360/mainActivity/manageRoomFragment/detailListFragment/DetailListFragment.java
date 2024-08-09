@@ -1,4 +1,4 @@
-package com.example.adminnhatro360.controller.mainActivity.manageRoomFragment.detailListFragment;
+package com.example.adminnhatro360.mainActivity.manageRoomFragment.detailListFragment;
 
 import static android.content.ContentValues.TAG;
 
@@ -40,17 +40,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.adminnhatro360.R;
-import com.example.adminnhatro360.controller.mainActivity.manageRoomFragment.OnRoomClickListener;
-import com.example.adminnhatro360.controller.mainActivity.manageRoomFragment.roomDetailActivity.RoomDetailActivity;
+import com.example.adminnhatro360.mainActivity.manageRoomFragment.OnRoomClickListener;
+import com.example.adminnhatro360.mainActivity.manageRoomFragment.roomDetailActivity.RoomDetailActivity;
 import com.example.adminnhatro360.model.Room;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.storage.FirebaseStorage;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -97,11 +92,11 @@ public class DetailListFragment extends Fragment implements OnRoomClickListener 
         Log.d("DetailListFragment", "onCreateView called");
         View view = inflater.inflate(R.layout.fragment_detail_list, container, false);
 
-        init(view);
-
         if (getArguments() != null) {
-            roomStatus = getArguments().getBoolean("room_status", false); // -1 là giá trị mặc định nếu không tìm thấy key
+            roomStatus = getArguments().getBoolean("room_status", false);
         }
+
+        init(view);
 
         fetchRoomsFromFirestore();
 
@@ -119,6 +114,7 @@ public class DetailListFragment extends Fragment implements OnRoomClickListener 
         checkboxSelectAll = view.findViewById(R.id.checkbox_select_all);
         tvSelectAll = view.findViewById(R.id.tv_select_all);
         tvApprove = view.findViewById(R.id.tv_approved);
+        tvApprove.setVisibility((roomStatus) ? View.GONE : View.VISIBLE);
         tvDeny = view.findViewById(R.id.tv_deny);
         overlay = view.findViewById(R.id.overlay);
         province = district = provinceId = districtId = "";
@@ -200,7 +196,7 @@ public class DetailListFragment extends Fragment implements OnRoomClickListener 
         });
 
         checkboxSelectAll.setOnCheckedChangeListener((buttonView, isChecked) -> selectAllCheckboxes(isChecked));
-        tvApprove.setOnClickListener(v -> showDeleteConfirmationDialog(true));
+        if(!roomStatus) tvApprove.setOnClickListener(v -> showDeleteConfirmationDialog(true));
         tvDeny.setOnClickListener(v -> showDeleteConfirmationDialog(false));
     }
 

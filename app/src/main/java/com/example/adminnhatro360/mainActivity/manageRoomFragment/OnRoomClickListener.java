@@ -1,4 +1,4 @@
-package com.example.adminnhatro360.controller.mainActivity.manageRoomFragment;
+package com.example.adminnhatro360.mainActivity.manageRoomFragment;
 
 import com.example.adminnhatro360.model.Room;
 

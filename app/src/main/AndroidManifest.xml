@@ -26,16 +26,16 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".controller.mainActivity.manageRoomFragment.roomDetailActivity.RoomDetailActivity"
+            android:name=".mainActivity.manageRoomFragment.roomDetailActivity.RoomDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".controller.RegisterActivity"
+            android:name=".authenticaionActivity.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".controller.mainActivity.MainActivity"
+            android:name=".mainActivity.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".controller.LoginActivity"
+            android:name=".authenticaionActivity.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,7 +44,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".PushNotificationService"
+        <service android:name=".mainActivity.PushNotificationService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>

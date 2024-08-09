@@ -1,14 +1,15 @@
-package com.example.adminnhatro360.controller.mainActivity;
+package com.example.adminnhatro360.mainActivity;
 
 import static android.content.ContentValues.TAG;
 
+import android.annotation.SuppressLint;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowInsetsController;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -18,22 +19,18 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.example.adminnhatro360.controller.mainActivity.manageRoomFragment.CustomViewPager;
 import com.example.adminnhatro360.R;
-import com.example.adminnhatro360.controller.mainActivity.manageRoomFragment.detailListFragment.DetailListFragment;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.adminnhatro360.mainActivity.manageRoomFragment.detailListFragment.DetailListFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.auth.oauth2.GoogleCredentials;
-import com.google.common.collect.Lists;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collections;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -46,8 +43,8 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
-    private CustomViewPager viewPager;
-    private ViewPagerAdapter viewPagerAdapter;
+    private MainViewPager viewPager;
+    private MainViewPagerAdapter mainViewPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,8 +89,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUpViewPager(){
-        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        viewPager.setAdapter(viewPagerAdapter);
+        mainViewPagerAdapter = new MainViewPagerAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        viewPager.setAdapter(mainViewPagerAdapter);
     }
 
     private void setOnMenuSelected() {
@@ -104,22 +101,23 @@ public class MainActivity extends AppCompatActivity {
                 viewPager.setVisibility(View.VISIBLE);
             }
             if (itemId == R.id.nav_dashboard) {
-                viewPagerAdapter.reloadFragment(0);
+                mainViewPagerAdapter.reloadFragment(0);
                 viewPager.setCurrentItem(0, false);
                 return true;
             } else if (itemId == R.id.nav_manage_room) {
-                viewPagerAdapter.reloadFragment(1);
+                mainViewPagerAdapter.reloadFragment(1);
                 viewPager.setCurrentItem(1, false);
                 return true;
             } else if (itemId == R.id.nav_manage_user) {
-                viewPagerAdapter.reloadFragment(2);
+                mainViewPagerAdapter.reloadFragment(2);
                 viewPager.setCurrentItem(2, false);
                 return true;
-            } else if (itemId == R.id.nav_account) {
-                viewPagerAdapter.reloadFragment(3);
-                viewPager.setCurrentItem(3, false);
-                return true;
             }
+//            else if (itemId == R.id.nav_account) {
+//                mainViewPagerAdapter.reloadFragment(3);
+//                viewPager.setCurrentItem(3, false);
+//                return true;
+//            }
             return false;
         });
     }
@@ -138,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
                 .addToBackStack("DetailListFragment")
                 .commit();
     }
-
 
     @Override
     public void onBackPressed() {
@@ -181,64 +178,96 @@ public class MainActivity extends AppCompatActivity {
                         // Gửi thông báo đến token
                         String title = "Phòng đã được duyệt";
                         String body = "Phòng của bạn đã được duyệt và hiển thị trên ứng dụng.";
-                        sendNotification(token, title, body);
+                        new SendNotificationTask().execute(token, title, body);
+                    } else {
+                        Log.d(TAG, "No such document");
                     }
-                });
+                })
+                .addOnFailureListener(e -> Log.d(TAG, "get failed with ", e));
     }
 
-    private void sendNotification(String token, String title, String body) {
-        // Thay YOUR_SERVER_KEY bằng server key của bạn từ Firebase Console > Project settings > Cloud Messaging > Server key
-        String serverKey = "YOUR_SERVER_KEY";
-        String fcmUrl = "https://fcm.googleapis.com/v1/projects/nhatro360-1dfaa/messages:send";
+    private class SendNotificationTask extends AsyncTask<String, Void, Void> {
+        @Override
+        protected Void doInBackground(String... params) {
+            String token = params[0];
+            String title = params[1];
+            String body = params[2];
 
-        OkHttpClient client = new OkHttpClient();
-        MediaType JSON = MediaType.get("application/json; charset=utf-8");
-        JSONObject json = new JSONObject();
-        try {
-            JSONObject message = new JSONObject();
-            message.put("token", token);
+            String projectId = "nhatro360-1dfaa"; // Thay thế bằng project ID của bạn
+            String fcmUrl = "https://fcm.googleapis.com/v1/projects/" + projectId + "/messages:send";
 
-            JSONObject notification = new JSONObject();
-            notification.put("title", title);
-            notification.put("body", body);
+            OkHttpClient client = new OkHttpClient();
+            MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
-            message.put("notification", notification);
-            json.put("message", message);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+            JSONObject json = new JSONObject();
+            try {
+                JSONObject message = new JSONObject();
+                message.put("token", token);
 
-        RequestBody rqbody = RequestBody.create(JSON, json.toString());
-        Request request = new Request.Builder()
-                .url(fcmUrl)
-                .post(rqbody)
-                .addHeader("Authorization", "Bearer " + getAccessToken())
-                .build();
+                JSONObject notification = new JSONObject();
+                notification.put("title", title);
+                notification.put("body", body);
 
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
+                message.put("notification", notification);
+                message.put("android", new JSONObject().put("ttl", "3600s")); // Thêm thời gian sống của thông báo nếu cần
+
+                json.put("message", message);
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                Log.d(TAG, "Notification sent successfully: " + response.body().string());
-            }
-        });
-    }
+            try {
+                @SuppressLint("WrongThread") String accessToken = new GetAccessTokenTask().execute().get(); // Sử dụng AsyncTask để lấy access token
+                RequestBody bodyRequest = RequestBody.create(JSON, json.toString());
+                Request request = new Request.Builder()
+                        .url(fcmUrl)
+                        .post(bodyRequest)
+                        .addHeader("Authorization", "Bearer " + accessToken)
+                        .addHeader("Content-Type", "application/json")
+                        .build();
 
-    private String getAccessToken() {
-        try {
-            GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("path/to/your/service-account-file.json"))
-                    .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/firebase.messaging"));
-            credentials.refreshIfExpired();
-            return credentials.getAccessToken().getTokenValue();
-        } catch (IOException e) {
-            e.printStackTrace();
+                client.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        if (response.isSuccessful()) {
+                            Log.d(TAG, "Notification sent successfully: " + response.body().string());
+                        } else {
+                            Log.d(TAG, "Failed to send notification: " + response.body().string());
+                        }
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             return null;
         }
     }
 
+    private class GetAccessTokenTask extends AsyncTask<Void, Void, String> {
+        @Override
+        protected String doInBackground(Void... voids) {
+            try {
+                return getAccessToken();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+    }
 
+    private String getAccessToken() throws IOException {
+        InputStream serviceAccount = getAssets().open("service-account-file.json");
+
+        GoogleCredentials credentials = GoogleCredentials.fromStream(serviceAccount)
+                .createScoped(Collections.singletonList("https://www.googleapis.com/auth/cloud-platform"));
+        credentials.refreshIfExpired();
+
+        return credentials.getAccessToken().getTokenValue();
+    }
 }

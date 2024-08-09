@@ -1,4 +1,4 @@
-package com.example.adminnhatro360.controller.mainActivity.dashboard;
+package com.example.adminnhatro360.mainActivity.dashboard;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -12,12 +12,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.adminnhatro360.R;
 import com.example.adminnhatro360.model.Room;
-import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -31,7 +27,6 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.Collections;

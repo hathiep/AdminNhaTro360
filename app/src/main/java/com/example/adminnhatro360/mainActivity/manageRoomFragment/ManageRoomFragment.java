@@ -1,4 +1,4 @@
-package com.example.adminnhatro360.controller.mainActivity.manageRoomFragment;
+package com.example.adminnhatro360.mainActivity.manageRoomFragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,28 +14,15 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.adminnhatro360.R;
-import com.example.adminnhatro360.controller.mainActivity.manageRoomFragment.roomDetailActivity.RoomDetailActivity;
+import com.example.adminnhatro360.mainActivity.manageRoomFragment.roomDetailActivity.RoomDetailActivity;
 import com.example.adminnhatro360.model.Room;
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ManageRoomFragment extends Fragment implements OnRoomClickListener, ManageRoomAdapter.OnRoomClickListener {
 
@@ -63,7 +50,6 @@ public class ManageRoomFragment extends Fragment implements OnRoomClickListener,
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                // Headers take up 2 spans (full width), while rooms take 1 span (half width)
                 return (itemList.get(position) instanceof String) ? 2 : 1;
             }
         });

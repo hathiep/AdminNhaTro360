@@ -1,4 +1,4 @@
-package com.example.adminnhatro360.controller.mainActivity.manageRoomFragment.roomDetailActivity;
+package com.example.adminnhatro360.mainActivity.manageRoomFragment.roomDetailActivity;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

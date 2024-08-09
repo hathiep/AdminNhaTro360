@@ -1,4 +1,4 @@
-package com.example.adminnhatro360.controller.mainActivity.manageRoomFragment;
+package com.example.adminnhatro360.mainActivity;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -6,13 +6,13 @@ import android.view.MotionEvent;
 
 import androidx.viewpager.widget.ViewPager;
 
-public class CustomViewPager extends ViewPager {
+public class MainViewPager extends ViewPager {
 
-    public CustomViewPager(Context context) {
+    public MainViewPager(Context context) {
         super(context);
     }
 
-    public CustomViewPager(Context context, AttributeSet attrs) {
+    public MainViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
