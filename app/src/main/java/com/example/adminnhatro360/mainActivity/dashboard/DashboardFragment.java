@@ -1,5 +1,7 @@
 package com.example.adminnhatro360.mainActivity.dashboard;
 
+import android.app.AlertDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,12 +14,16 @@ import androidx.fragment.app.Fragment;
 
 import com.example.adminnhatro360.R;
 import com.example.adminnhatro360.model.Room;
+import com.example.adminnhatro360.model.RoomChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -98,6 +104,8 @@ public class DashboardFragment extends Fragment {
         roomTypeCount.put(3, 0);
         roomTypeCount.put(4, 0);
 
+        int totalRooms = roomList.size();
+
         Map<String, Integer> priceCount = new HashMap<>();
         Map<String, Integer> areaCount = new HashMap<>();
 
@@ -117,16 +125,21 @@ public class DashboardFragment extends Fragment {
 
         // Tạo dữ liệu cho biểu đồ hình quạt (loại phòng)
         ArrayList<PieEntry> typeEntries = new ArrayList<>();
-        typeEntries.add(new PieEntry(roomTypeCount.get(1), "Phòng"));
-        typeEntries.add(new PieEntry(roomTypeCount.get(2), "Căn hộ"));
-        typeEntries.add(new PieEntry(roomTypeCount.get(3), "CCMN"));
-        typeEntries.add(new PieEntry(roomTypeCount.get(4), "Nguyên căn"));
+        typeEntries.add(new PieEntry((float) roomTypeCount.get(1) / totalRooms * 100, "Phòng", roomTypeCount.get(1)));
+        typeEntries.add(new PieEntry((float) roomTypeCount.get(2) / totalRooms * 100, "Căn hộ", roomTypeCount.get(2)));
+        typeEntries.add(new PieEntry((float) roomTypeCount.get(3) / totalRooms * 100, "CCMN", roomTypeCount.get(3)));
+        typeEntries.add(new PieEntry((float) roomTypeCount.get(4) / totalRooms * 100, "Nguyên căn", roomTypeCount.get(4)));
 
         PieDataSet typeDataSet = new PieDataSet(typeEntries, "");
         typeDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
 
         // Thêm khoảng cách giữa các thành phần của biểu đồ hình quạt
         typeDataSet.setSliceSpace(3f);
+
+        // Hiển thị tỷ lệ phần trăm với ký tự "%"
+        typeDataSet.setValueFormatter(new PercentageFormatter());
+        typeDataSet.setValueTextSize(12f);
+        typeDataSet.setValueTextColor(Color.WHITE);
 
         PieData pieData = new PieData(typeDataSet);
         pieChartRoomTypes.setData(pieData);
@@ -135,7 +148,9 @@ public class DashboardFragment extends Fragment {
         pieChartRoomTypes.setHoleRadius(0f);
         pieChartRoomTypes.setTransparentCircleRadius(0f);
 
+        // Thiết lập legend để hiển thị tên loại phòng
         pieChartRoomTypes.getLegend().setEnabled(true);
+        pieChartRoomTypes.getLegend().setTextSize(14);
         pieChartRoomTypes.getLegend().setVerticalAlignment(Legend.LegendVerticalAlignment.CENTER);
         pieChartRoomTypes.getLegend().setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
         pieChartRoomTypes.getLegend().setOrientation(Legend.LegendOrientation.VERTICAL);
@@ -143,6 +158,10 @@ public class DashboardFragment extends Fragment {
 
         pieChartRoomTypes.getDescription().setEnabled(false);
         pieChartRoomTypes.invalidate(); // Refresh chart
+
+        // Cài đặt MarkerView tùy chỉnh
+        RoomChart markerView = new RoomChart(getContext(), R.layout.custom_pie_chart_detail);
+        pieChartRoomTypes.setMarker(markerView);
 
         // Tạo dữ liệu cho biểu đồ đường (giá)
         ArrayList<Entry> priceEntries = new ArrayList<>();
@@ -206,6 +225,14 @@ public class DashboardFragment extends Fragment {
         lineChartArea.getDescription().setEnabled(false);
         lineChartArea.getLegend().setEnabled(true);
         lineChartArea.invalidate(); // Refresh chart
+    }
+
+    // Tạo lớp tùy chỉnh để định dạng tỷ lệ phần trăm
+    public class PercentageFormatter extends ValueFormatter {
+        @Override
+        public String getFormattedValue(float value) {
+            return String.format("%.1f%%", value);
+        }
     }
 
     private String getPriceRange(int price) {

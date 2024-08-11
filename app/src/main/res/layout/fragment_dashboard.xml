@@ -2,14 +2,15 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingHorizontal="5dp"
-    android:paddingBottom="80dp">
+    android:scrollbars="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="80dp"
         android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
@@ -22,8 +23,8 @@
 
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/pie_chart_room_types"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"/>
+                android:layout_width="460dp"
+                android:layout_height="250dp" />
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
@@ -44,7 +45,8 @@
         <androidx.cardview.widget.CardView
             app:cardCornerRadius="20dp"
             android:layout_marginHorizontal="5dp"
-            android:layout_marginVertical="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="40dp"
             android:layout_width="match_parent"
             android:layout_height="200dp">
 
