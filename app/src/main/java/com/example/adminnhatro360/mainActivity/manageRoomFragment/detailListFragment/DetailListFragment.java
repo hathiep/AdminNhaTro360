@@ -68,7 +68,7 @@ public class DetailListFragment extends Fragment implements OnRoomClickListener 
     private List<String> provinceIds, districtIds;
     private JSONArray provincesArray, districtsArray;
     private String provinceId, districtId, province, district;
-    private List<Room> listAllRoom, listSearchedRoom;
+    private List<Room> listAllRoom, listSearchedRoom, listShowRoom;
     private List<TextView> listTvPostType;
     private List<TextView> listTvRoomType;
     private List<TextView> listTvOrderType;
@@ -108,6 +108,7 @@ public class DetailListFragment extends Fragment implements OnRoomClickListener 
     private void init(View view) {
         listAllRoom = new ArrayList<>();
         listSearchedRoom = new ArrayList<>();
+        listShowRoom = new ArrayList<>();
         edtSearch = view.findViewById(R.id.edt_search);
         progressBar = view.findViewById(R.id.progressBar);
         imvDrop = view.findViewById(R.id.imv_drop);
@@ -123,7 +124,7 @@ public class DetailListFragment extends Fragment implements OnRoomClickListener 
         tvEmptyMessage = view.findViewById(R.id.tv_empty_message);
         recyclerViewRoomList = view.findViewById(R.id.recycler_view_room_list);
         recyclerViewRoomList.setLayoutManager(new LinearLayoutManager(getContext()));
-        roomAdapter = new RoomAdapterSingle(listSearchedRoom, this, roomStatus, getContext());
+        roomAdapter = new RoomAdapterSingle(listShowRoom, this, roomStatus, getContext());
         recyclerViewRoomList.setAdapter(roomAdapter);
 
         db = FirebaseFirestore.getInstance();
@@ -186,11 +187,11 @@ public class DetailListFragment extends Fragment implements OnRoomClickListener 
 
         tvSelectAll.setOnClickListener(view -> {
             if(checkboxSelectAll.isChecked()){
-                tvSelectAll.setText(getString(R.string.select_all) + " (" + listSearchedRoom.size() + ")");
+                tvSelectAll.setText(getString(R.string.select_all) + " (" + listShowRoom.size() + ")");
                 checkboxSelectAll.setChecked(false);
             }
             else {
-                tvSelectAll.setText(getString(R.string.unselect_all) + " (" + listSearchedRoom.size() + ")");
+                tvSelectAll.setText(getString(R.string.unselect_all) + " (" + listShowRoom.size() + ")");
                 checkboxSelectAll.setChecked(true);
             }
         });
@@ -213,6 +214,7 @@ public class DetailListFragment extends Fragment implements OnRoomClickListener 
                 }
 
                 sortRoomsByTimePosted(listAllRoom);
+                listSearchedRoom.addAll(listAllRoom);
                 updateRoomList(listAllRoom);
 
             } else {
@@ -222,9 +224,9 @@ public class DetailListFragment extends Fragment implements OnRoomClickListener 
     }
 
     private void updateRoomList(List<Room> rooms) {
-        listSearchedRoom.clear();
-        listSearchedRoom.addAll(rooms);
-        tvSelectAll.setText(getString(R.string.select_all) + " (" + listSearchedRoom.size() + ")");
+        listShowRoom.clear();
+        listShowRoom.addAll(rooms);
+        tvSelectAll.setText(getString(R.string.select_all) + " (" + listShowRoom.size() + ")");
         roomAdapter.updateSelectedList();
         roomAdapter.notifyDataSetChanged();
         tvEmptyMessage.setVisibility(rooms.isEmpty() ? View.VISIBLE : View.GONE);
@@ -324,9 +326,9 @@ public class DetailListFragment extends Fragment implements OnRoomClickListener 
 
     public void selectAllCheckboxes(boolean selectAll) {
         if(checkboxSelectAll.isChecked())
-            tvSelectAll.setText(getString(R.string.unselect_all) + " (" + listSearchedRoom.size() + ")");
+            tvSelectAll.setText(getString(R.string.unselect_all) + " (" + listShowRoom.size() + ")");
         else
-            tvSelectAll.setText(getString(R.string.select_all) + " (" + listSearchedRoom.size() + ")");
+            tvSelectAll.setText(getString(R.string.select_all) + " (" + listShowRoom.size() + ")");
         roomAdapter.selectAllCheckboxes(selectAll);
     }
 
@@ -335,7 +337,7 @@ public class DetailListFragment extends Fragment implements OnRoomClickListener 
         List<Integer> selectedPositions = roomAdapter.getSelectedPositions();
 
         for (int position : selectedPositions) {
-            Room room = listSearchedRoom.get(position);
+            Room room = listShowRoom.get(position);
             room.setStatus(status);
             Timestamp currentTimestamp = Timestamp.now();
             room.setTimePosted(currentTimestamp);
@@ -348,7 +350,7 @@ public class DetailListFragment extends Fragment implements OnRoomClickListener 
                     });
         }
         List<Room> listRoomUpdated = new ArrayList<>();
-        for(Room room : listSearchedRoom){
+        for(Room room : listShowRoom){
             if(room.getStatus() != status) listRoomUpdated.add(room);
         }
         updateRoomList(listRoomUpdated);
@@ -440,13 +442,6 @@ public class DetailListFragment extends Fragment implements OnRoomClickListener 
         int roomType = listOption[1];
         int orderType = listOption[2];
 
-        Log.e(TAG, "PostType = " + postType);
-        Log.e(TAG, "RoomType = " + roomType);
-        Log.e(TAG, "OrderType = " + orderType);
-        Log.e(TAG, "Price = " + minPrice + " - " + maxPrice);
-        Log.e(TAG, "Area = " + minArea + " - " + maxArea);
-        Log.e(TAG, "" + listSearchedRoom.size());
-
         // Lọc danh sách phòng dựa trên các điều kiện
         List<Room> filteredRooms = new ArrayList<>();
         for (Room room : listSearchedRoom) {
@@ -462,14 +457,16 @@ public class DetailListFragment extends Fragment implements OnRoomClickListener 
             }
 
             int price = Integer.parseInt(room.getPrice());
-            if (price < minPrice * 1000000 || price > maxPrice * 1000000) {
-                matches = false;
-            }
+            if (minPrice > 1 && maxPrice == 20 && price < minPrice * 1000000) matches = false;
+            else if (minPrice == 1 && maxPrice < 20 && price > maxPrice * 1000000) matches = false;
+            else if ((minPrice > 1 && price < minPrice * 1000000) ||
+                    (maxPrice < 20 && price > maxPrice * 1000000)) matches = false;
 
             int area = Integer.parseInt(room.getArea());
-            if (area < minArea || area > maxArea) {
-                matches = false;
-            }
+            if (minArea > 10 && maxArea == 100 && area < minArea) matches = false;
+            else if (minArea == 10 && maxArea < 100 && area > maxArea) matches = false;
+            else if ((minArea > 10 && area < minArea) ||
+                    (maxArea < 100 && area > maxArea)) matches = false;
 
             if (matches) {
                 filteredRooms.add(room);
@@ -522,6 +519,8 @@ public class DetailListFragment extends Fragment implements OnRoomClickListener 
         progressBar.setVisibility(View.VISIBLE);
         List<Room> searchResults = filterRoomsByQuery(listAllRoom, query);
         new Handler().postDelayed(() -> {
+            listSearchedRoom.clear();
+            listSearchedRoom.addAll(searchResults);
             updateRoomList(searchResults);
             progressBar.setVisibility(View.GONE);
         }, 1000);

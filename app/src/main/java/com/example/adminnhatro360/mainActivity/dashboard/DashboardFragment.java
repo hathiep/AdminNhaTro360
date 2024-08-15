@@ -170,6 +170,15 @@ public class DashboardFragment extends Fragment {
         for (int i = 0; i <= 20; i++) {
             String range = getPriceRange(i * 1000000);
             int count = priceCount.getOrDefault(range, 0);
+
+            // Nếu i là 20, cần tính cả các phòng có giá trên 20 triệu
+            if (i == 20) {
+                for (Room room : roomList) {
+                    if (Integer.parseInt(room.getPrice()) > 20000000) {
+                        count++;
+                    }
+                }
+            }
             priceEntries.add(new Entry(i, count));
         }
 
@@ -201,6 +210,15 @@ public class DashboardFragment extends Fragment {
         for (int i = 0; i <= 10; i++) {
             String range = getAreaRange(i * 10);
             int count = areaCount.getOrDefault(range, 0);
+
+            // Nếu i là 10, cần tính cả các phòng có diện tích trên 100 m2
+            if (i == 10) {
+                for (Room room : roomList) {
+                    if (Integer.parseInt(room.getArea()) > 100) {
+                        count++;
+                    }
+                }
+            }
             areaEntries.add(new Entry(i, count));
         }
 
@@ -251,7 +269,11 @@ public class DashboardFragment extends Fragment {
     public class PriceValueFormatter extends ValueFormatter {
         @Override
         public String getFormattedValue(float value) {
-            return String.format("%d", (int) (value));
+            if (value == 20) {
+                return "20+";
+            } else {
+                return String.valueOf((int) value);
+            }
         }
     }
 
@@ -259,7 +281,11 @@ public class DashboardFragment extends Fragment {
     public class AreaValueFormatter extends ValueFormatter {
         @Override
         public String getFormattedValue(float value) {
-            return String.format("%d", (int) (value * 10));
+            if (value == 10) {
+                return "100+";
+            } else {
+                return String.valueOf((int) (value * 10));
+            }
         }
     }
 }
